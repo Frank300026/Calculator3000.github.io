@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="it" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+  <title>Calcolatrice</title>
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#151513">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Calcolatrice">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="icons/icon-167.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512.png">
+
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+  <style>
+    :root, [data-theme="light"] {
+      --user-font-scale: 1;
+      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --radius-sm: 0.375rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+      --radius-full: 9999px;
+      --transition-interactive: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+
+      --color-bg: #f6f4ef;
+      --color-surface: #fbfaf7;
+      --color-surface-2: #f2efe9;
+      --color-surface-offset: #e9e3da;
+      --color-border: #d7d0c5;
+      --color-text: #241f18;
+      --color-text-muted: #736f68;
+      --color-text-faint: #a8a197;
+      --color-text-inverse: #faf8f3;
+      --color-primary: #0f6b73;
+      --color-number: #2d4f8f;
+      --color-number-soft: #dce6fb;
+      --color-operator: #9a5a12;
+      --color-operator-soft: #f5e3cf;
+      --color-equal: #0f6b73;
+      --color-equal-soft: #d3e8e5;
+      --color-error: #9a345f;
+      --color-select: #0f6b73;
+
+      --border-subtle: rgba(36, 31, 24, 0.1);
+      --border-strong: rgba(36, 31, 24, 0.14);
+      --overlay-dim: rgba(20, 18, 14, 0.5);
+
+      --border-number: rgba(45, 79, 143, 0.22);
+      --border-operator: rgba(154, 90, 18, 0.24);
+      --border-equal: #0c565c;
+      --border-primary: #0b5459;
+      --border-error-soft: rgba(154, 52, 95, 0.26);
+      --bg-error-soft: rgba(154, 52, 95, 0.14);
+      --bg-error-holding: rgba(154, 52, 95, 0.18);
+
+      --shadow-sm: 0 1px 2px rgba(26, 22, 18, 0.08);
+      --shadow-md: 0 10px 24px rgba(26, 22, 18, 0.12);
+      --shadow-lg: 0 18px 42px rgba(26, 22, 18, 0.16);
+      --font-body: 'Satoshi', Inter, sans-serif;
+    }
+
+    [data-theme="dark"] {
+      --color-bg: #151513;
+      --color-surface: #1d1c19;
+      --color-surface-2: #262420;
+      --color-surface-offset: #312f2a;
+      --color-border: #3d3933;
+      --color-text: #f2eee6;
+      --color-text-muted: #beb6aa;
+      --color-text-faint: #827c73;
+      --color-text-inverse: #151513;
+      --color-primary: #61aeb7;
+      --color-number: #8caeff;
+      --color-number-soft: #22314d;
+      --color-operator: #f2af61;
+      --color-operator-soft: #42301f;
+      --color-equal: #6fc6ba;
+      --color-equal-soft: #1f3d39;
+      --color-error: #db72a0;
+      --color-select: #6fc6ba;
+
+      --border-subtle: rgba(242, 238, 230, 0.09);
+      --border-strong: rgba(242, 238, 230, 0.14);
+      --overlay-dim: rgba(0, 0, 0, 0.6);
+
+      --border-number: rgba(140, 174, 255, 0.28);
+      --border-operator: rgba(242, 175, 97, 0.3);
+      --border-equal: #488f86;
+      --border-primary: #488f86;
+      --border-error-soft: rgba(219, 114, 160, 0.3);
+      --bg-error-soft: rgba(219, 114, 160, 0.16);
+      --bg-error-holding: rgba(219, 114, 160, 0.2);
+
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+      --shadow-md: 0 10px 24px rgba(0, 0, 0, 0.32);
+      --shadow-lg: 0 18px 42px rgba(0, 0, 0, 0.44);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html {
+      -webkit-text-size-adjust: none;
+      text-size-adjust: none;
+      height: 100%;
+      background: var(--color-bg);
+    }
+
+    body, button, input { font: inherit; }
+
+    html, body {
+      min-height: 100%;
+      margin: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: 1.5;
+      color: var(--color-text);
+      background: var(--color-bg);
+      display: flex;
+      justify-content: center;
+      padding: 0;
+      overflow: hidden;
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+      min-height: 100dvh;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      transition: transform var(--transition-interactive), background var(--transition-interactive), color var(--transition-interactive), box-shadow var(--transition-interactive), border-color var(--transition-interactive);
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      line-height: 0;
+    }
+    button:hover { transform: translateY(-1px); }
+    button:active { transform: translateY(0); }
+    :focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 3px;
+      border-radius: var(--radius-md);
+    }
+
+    .expression:focus,
+    .expression:focus-visible {
+      outline: none;
+    }
+
+    .app {
+      width: min(100%, 32rem);
+      height: 100vh;
+      height: -webkit-fill-available;
+      height: 100dvh;
+      background: var(--color-surface);
+      border-left: 1px solid var(--border-strong);
+      border-right: 1px solid var(--border-strong);
+      border-radius: 0;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    @media (min-width: 560px) {
+      .app {
+        height: min(100dvh, 46rem);
+        margin: var(--space-4) 0;
+        border-radius: 1.75rem;
+        border: 1px solid var(--border-strong);
+        padding-bottom: 0;
+      }
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-3);
+      padding: calc(var(--space-4) + env(safe-area-inset-top, 0px)) var(--space-4) 0;
+      flex: 0 0 auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      min-width: 0;
+    }
+
+    .logo {
+      width: 2rem;
+      height: 2rem;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-primary);
+      background: var(--color-surface-offset);
+      border: 1px solid var(--border-subtle);
+      flex: 0 0 auto;
+      padding: 0;
+    }
+
+    .logo svg { display: block; }
+
+    .help-modal {
+      align-items: flex-start;
+      padding-top: calc(var(--space-4) + env(safe-area-inset-top, 0px));
+    }
+
+    .help-modal .history-modal-panel {
+      max-height: 78vh;
+    }
+
+    .help-list {
+      overflow-y: auto;
+      padding: var(--space-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .help-item {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .help-item strong {
+      font-size: var(--text-sm);
+      font-weight: 700;
+      color: var(--color-text);
+    }
+
+    .help-item span {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      line-height: 1.4;
+    }
+
+    .brand-copy h1 {
+      margin: 0;
+      font-size: var(--text-sm);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .theme-toggle {
+      width: 2.5rem;
+      height: 2.5rem;
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-full);
+      background: var(--color-surface-2);
+      color: var(--color-text);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-sm);
+      padding: 0;
+    }
+
+    .theme-toggle svg { display: block; }
+
+    .screen {
+      padding: var(--space-4);
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--space-3) * 2);
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .history {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: var(--space-2);
+      padding: 0 var(--space-1);
+      border: none;
+      background: transparent;
+      overflow: hidden;
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+
+    .entry {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 0.35rem;
+      text-align: right;
+      font-variant-numeric: tabular-nums lining-nums;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 0;
+      background: transparent;
+      border: none;
+      width: 100%;
+      flex: 0 0 auto;
+      line-height: 1.15;
+    }
+
+    .entry .formula {
+      color: var(--color-text-muted);
+      font-size: calc(clamp(0.85rem, 0.78rem + 0.18vw, 0.95rem) * var(--user-font-scale));
+      font-weight: 400;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .entry .result {
+      color: var(--color-text);
+      opacity: 0.9;
+      font-size: calc(clamp(0.9rem, 0.82rem + 0.2vw, 1rem) * var(--user-font-scale));
+      font-weight: 600;
+      flex: 0 0 auto;
+    }
+
+    .entry.latest .formula {
+      color: var(--color-text);
+      font-weight: 500;
+    }
+
+    .entry.latest .result {
+      color: var(--color-text);
+      opacity: 1;
+      font-weight: 700;
+    }
+
+    .entry.error .result,
+    .entry.latest.error .result {
+      color: var(--color-error);
+      opacity: 1;
+    }
+
+    .expression-wrap {
+      display: grid;
+      position: relative;
+      flex: 0 0 auto;
+      min-height: 0;
+    }
+
+    .expression {
+      width: 100%;
+      height: 4rem;
+      border: none;
+      border-radius: 1.2rem;
+      background: transparent;
+      color: var(--color-text);
+      padding: 0 var(--space-2);
+      font-size: calc(var(--text-lg) * 1.5 * var(--user-font-scale));
+      font-weight: 600;
+      text-align: right;
+      font-variant-numeric: tabular-nums lining-nums;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .empty-hint {
+      position: absolute;
+      top: 50%;
+      right: calc(var(--space-2) + 0.15rem);
+      transform: translateY(-50%);
+      width: 0.15rem;
+      height: 1.7rem;
+      background: var(--color-text-faint);
+      border-radius: var(--radius-full);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .empty-hint.visible {
+      animation: blink-caret 1.1s steps(1) infinite;
+    }
+
+    @keyframes blink-caret {
+      0%, 50% { opacity: 1; }
+      50.01%, 100% { opacity: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .empty-hint.visible {
+        animation: none;
+        opacity: 0.6;
+      }
+    }
+
+    .keyboard {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-auto-rows: minmax(3.95rem, auto);
+      gap: var(--space-3);
+      padding: 0 var(--space-4) calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+      flex: 0 0 auto;
+    }
+
+    .key {
+      min-height: 3.95rem;
+      border-radius: 1.05rem;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-sm);
+      font-size: 1.3rem;
+      line-height: 1;
+      font-weight: 700;
+      background: var(--color-surface-2);
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .key svg {
+      display: block;
+      width: 1.35rem;
+      height: 1.35rem;
+    }
+
+    .key.number {
+      background: var(--color-number-soft);
+      color: var(--color-number);
+      border-color: var(--border-number);
+    }
+
+    .key.operator {
+      background: var(--color-operator-soft);
+      color: var(--color-operator);
+      border-color: var(--border-operator);
+    }
+
+    .key.utility {
+      background: var(--color-surface-offset);
+      color: var(--color-text);
+    }
+
+    .key.equal {
+      background: var(--color-equal);
+      color: var(--color-text-inverse);
+      border-color: var(--border-equal);
+      font-size: 1.45rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .key.delete.holding {
+      background: var(--bg-error-holding);
+      color: var(--color-error);
+      border-color: var(--border-error-soft);
+    }
+
+    .key.delete svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    .history-modal {
+      position: fixed;
+      inset: 0;
+      background: var(--overlay-dim);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 50;
+      padding: var(--space-4);
+      padding-bottom: calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+    }
+
+    .history-modal.open {
+      display: flex;
+    }
+
+    .history-modal-panel {
+      width: min(100%, 32rem);
+      max-height: 72vh;
+      background: var(--color-surface);
+      border-radius: 1.5rem;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--border-strong);
+    }
+
+    .history-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-4);
+      border-bottom: 1px solid var(--border-subtle);
+      flex: 0 0 auto;
+    }
+
+    .history-modal-header h2 {
+      margin: 0;
+      font-size: var(--text-sm);
+      font-weight: 700;
+    }
+
+    .settings-header-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .history-modal-close {
+      width: 2.2rem;
+      height: 2.2rem;
+      border-radius: var(--radius-full);
+      background: var(--color-surface-2);
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border-subtle);
+      padding: 0;
+    }
+
+    .history-modal-close svg { display: block; }
+
+    .history-modal-close.edit-active {
+      background: var(--color-primary);
+      color: var(--color-text-inverse);
+      border-color: var(--border-primary);
+    }
+
+    .history-modal-close.clear {
+      background: var(--bg-error-soft);
+      color: var(--color-error);
+      border-color: var(--border-error-soft);
+    }
+
+    .history-modal-list {
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+      padding: var(--space-2) var(--space-4) var(--space-4);
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      scrollbar-width: thin;
+    }
+
+    .history-modal-list::-webkit-scrollbar { width: 0.3rem; }
+    .history-modal-list::-webkit-scrollbar-thumb {
+      background: var(--border-strong);
+      border-radius: var(--radius-full);
+    }
+    .history-modal-list::-webkit-scrollbar-track { background: transparent; }
+
+    .history-modal-empty {
+      color: var(--color-text-faint);
+      font-size: var(--text-sm);
+      text-align: center;
+      padding: var(--space-6) 0;
+    }
+
+    .history-modal-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: var(--space-1) 0;
+    }
+
+    .history-modal-row:first-child {
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .select-circle {
+      width: 1.35rem;
+      height: 1.35rem;
+      border-radius: var(--radius-full);
+      border: 2px solid var(--border-strong);
+      background: transparent;
+      flex: 0 0 auto;
+      padding: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .history-modal.editing .select-circle {
+      display: flex;
+    }
+
+    .select-circle.checked {
+      background: var(--color-select);
+      border-color: var(--color-select);
+    }
+
+    .select-circle.checked svg {
+      display: block;
+      width: 0.85rem;
+      height: 0.85rem;
+      color: var(--color-text-inverse);
+    }
+
+    .select-circle svg { display: none; }
+
+    .history-modal .entry {
+      justify-content: space-between;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-2);
+      border: none;
+      flex: 1 1 auto;
+    }
+
+    .history-modal .entry .formula {
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      text-align: left;
+      flex: 1 1 auto;
+    }
+
+    .history-modal .entry .result {
+      font-size: var(--text-sm);
+      color: var(--color-text);
+      opacity: 1;
+      flex: 0 0 auto;
+    }
+
+    .history-modal-count {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      padding: var(--space-2) var(--space-4) 0;
+      flex: 0 0 auto;
+    }
+
+    .settings-list {
+      overflow-y: auto;
+      padding: var(--space-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-5);
+    }
+
+    .setting-row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .setting-row-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: var(--space-2);
+    }
+
+    .setting-row-header span:first-child {
+      font-size: var(--text-sm);
+      font-weight: 700;
+      color: var(--color-text);
+    }
+
+    .setting-row-header span:last-child {
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .setting-row input[type="range"] {
+      width: 100%;
+      height: 1.6rem;
+      appearance: none;
+      -webkit-appearance: none;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .setting-row input[type="range"]::-webkit-slider-runnable-track {
+      height: 0.4rem;
+      border-radius: var(--radius-full);
+      background: var(--color-surface-offset);
+    }
+
+    .setting-row input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 1.3rem;
+      height: 1.3rem;
+      border-radius: var(--radius-full);
+      background: var(--color-primary);
+      border: 2px solid var(--color-surface);
+      box-shadow: var(--shadow-sm);
+      margin-top: -0.45rem;
+    }
+
+    .setting-row input[type="range"]::-moz-range-track {
+      height: 0.4rem;
+      border-radius: var(--radius-full);
+      background: var(--color-surface-offset);
+    }
+
+    .setting-row input[type="range"]::-moz-range-thumb {
+      width: 1.3rem;
+      height: 1.3rem;
+      border-radius: var(--radius-full);
+      background: var(--color-primary);
+      border: 2px solid var(--color-surface);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .decimals-options {
+      display: flex;
+      gap: var(--space-2);
+    }
+
+    .decimals-option {
+      flex: 1;
+      min-height: 2.6rem;
+      border-radius: 0.85rem;
+      background: var(--color-surface-2);
+      color: var(--color-text);
+      border: 1px solid var(--border-subtle);
+      font-weight: 700;
+      font-size: var(--text-sm);
+    }
+
+    .decimals-option.active {
+      background: var(--color-primary);
+      color: var(--color-text-inverse);
+      border-color: var(--border-primary);
+    }
+
+    @media (max-width: 420px) {
+      .app { border-radius: 1.3rem; }
+      .keyboard { gap: var(--space-2); }
+      .key { min-height: 3.55rem; border-radius: 0.95rem; }
+      .expression { font-size: var(--text-base); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app" aria-label="Calcolatrice con formule, percentuali corrette e cronologia risultati">
+    <div class="topbar">
+      <div class="brand">
+        <button class="logo" type="button" id="helpToggle" aria-label="Apri guida rapida">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="3.5" width="14" height="17" rx="3"></rect>
+            <path d="M8.5 8h7"></path>
+            <path d="M8.5 12h2"></path>
+            <path d="M13.5 12h2"></path>
+            <path d="M8.5 16h2"></path>
+            <path d="M13.5 16h2"></path>
+          </svg>
+        </button>
+        <div class="brand-copy">
+          <h1>Calcolatrice</h1>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="theme-toggle" type="button" id="settingsToggle" aria-label="Apri impostazioni">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+        <button class="theme-toggle" type="button" id="historyToggle" aria-label="Mostra cronologia completa">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 7v5l3.5 2"></path>
+          </svg>
+        </button>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Cambia tema">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <section class="screen" aria-label="Display e cronologia">
+      <div class="history" id="history" aria-live="polite"></div>
+
+      <div class="expression-wrap">
+        <input
+          id="expression"
+          class="expression"
+          type="text"
+          inputmode="none"
+          autocomplete="off"
+          spellcheck="false"
+          aria-label="Inserisci formula"
+          placeholder=""
+        />
+        <span class="empty-hint" id="emptyHint" aria-hidden="true"></span>
+      </div>
+    </section>
+
+    <section class="keyboard" aria-label="Tastierino calcolatrice ordinato">
+      <button class="key utility" data-value="(" type="button">(</button>
+      <button class="key utility" data-value=")" type="button">)</button>
+      <button class="key utility" data-value="%" type="button">%</button>
+      <button class="key utility delete" id="deleteKey" type="button" aria-label="Cancella ultimo carattere, tieni premuto per cancellare tutto">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M8.5 4h10.5a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H8.5a2 2 0 0 1-1.6-0.8L2 12l4.9-6.53A2 2 0 0 1 8.5 4z"></path>
+          <path d="M10.2 9.2l5.6 5.6M15.8 9.2l-5.6 5.6" stroke="var(--color-text-inverse)" stroke-width="1.6" stroke-linecap="round" fill="none"></path>
+        </svg>
+      </button>
+
+      <button class="key number" data-value="7" type="button">7</button>
+      <button class="key number" data-value="8" type="button">8</button>
+      <button class="key number" data-value="9" type="button">9</button>
+      <button class="key operator" data-value="/" type="button">÷</button>
+
+      <button class="key number" data-value="4" type="button">4</button>
+      <button class="key number" data-value="5" type="button">5</button>
+      <button class="key number" data-value="6" type="button">6</button>
+      <button class="key operator" data-value="*" type="button">×</button>
+
+      <button class="key number" data-value="1" type="button">1</button>
+      <button class="key number" data-value="2" type="button">2</button>
+      <button class="key number" data-value="3" type="button">3</button>
+      <button class="key operator" data-value="-" type="button">−</button>
+
+      <button class="key utility" data-value="," type="button">,</button>
+      <button class="key number" data-value="0" type="button">0</button>
+      <button class="key equal" data-action="calculate" type="button">=</button>
+      <button class="key operator" data-value="+" type="button">+</button>
+    </section>
+  </main>
+
+  <div class="history-modal" id="historyModal" aria-hidden="true">
+    <div class="history-modal-panel" role="dialog" aria-modal="true" aria-label="Cronologia completa dei calcoli">
+      <div class="history-modal-header">
+        <h2>Cronologia</h2>
+        <div class="settings-header-actions">
+          <button class="history-modal-close" type="button" id="historyEditToggle" aria-label="Modifica cronologia">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 20h9"></path>
+              <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+            </svg>
+          </button>
+          <button class="history-modal-close clear" type="button" id="historyClear" aria-label="Elimina cronologia">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 6h18"></path>
+              <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
+              <path d="M10 11v6"></path>
+              <path d="M14 11v6"></path>
+            </svg>
+          </button>
+          <button class="history-modal-close" type="button" id="historyModalClose" aria-label="Chiudi cronologia">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 6l12 12"></path>
+              <path d="M18 6L6 18"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="history-modal-count" id="historyModalCount"></div>
+      <div class="history-modal-list" id="historyModalList"></div>
+    </div>
+  </div>
+
+  <div class="history-modal" id="settingsModal" aria-hidden="true">
+    <div class="history-modal-panel" role="dialog" aria-modal="true" aria-label="Impostazioni calcolatrice">
+      <div class="history-modal-header">
+        <h2>Impostazioni</h2>
+        <div class="settings-header-actions">
+          <button class="history-modal-close" type="button" id="settingsModalClose" aria-label="Chiudi impostazioni">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 6l12 12"></path>
+              <path d="M18 6L6 18"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="settings-list">
+        <div class="setting-row">
+          <div class="setting-row-header">
+            <span>Dimensione numeri</span>
+            <span id="fontSizeValue">100%</span>
+          </div>
+          <input type="range" id="fontSizeRange" min="80" max="125" step="5" value="100" aria-label="Dimensione numeri">
+        </div>
+        <div class="setting-row">
+          <div class="setting-row-header">
+            <span>Cifre dopo la virgola (risultato)</span>
+          </div>
+          <div class="decimals-options" id="decimalsOptions">
+            <button class="decimals-option" type="button" data-decimals="0">0</button>
+            <button class="decimals-option" type="button" data-decimals="1">1</button>
+            <button class="decimals-option active" type="button" data-decimals="2">2</button>
+            <button class="decimals-option" type="button" data-decimals="3">3</button>
+            <button class="decimals-option" type="button" data-decimals="4">4</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="history-modal help-modal" id="helpModal" aria-hidden="true">
+    <div class="history-modal-panel" role="dialog" aria-modal="true" aria-label="Guida rapida">
+      <div class="history-modal-header">
+        <h2>Guida rapida</h2>
+        <div class="settings-header-actions">
+          <button class="history-modal-close" type="button" id="helpModalClose" aria-label="Chiudi guida">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 6l12 12"></path>
+              <path d="M18 6L6 18"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="help-list">
+        <div class="help-item">
+          <strong>Tasto canc</strong>
+          <span>Un tocco cancella un numero alla volta. Tieni premuto per cancellare tutto.</span>
+        </div>
+        <div class="help-item">
+          <strong>Impostazioni</strong>
+          <span>Regola la dimensione dei numeri e le cifre dopo la virgola del risultato. Si salva subito, senza conferma.</span>
+        </div>
+        <div class="help-item">
+          <strong>Cronologia</strong>
+          <span>Mostra tutti i calcoli salvati. Tocca "Modifica" per selezionare ed eliminare singole voci col cestino.</span>
+        </div>
+        <div class="help-item">
+          <strong>Giorno/Notte</strong>
+          <span>Il tasto in alto a destra cambia il tema chiaro e scuro dell'app.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const expressionInput = document.getElementById('expression');
+    const historyEl = document.getElementById('history');
+    const keys = document.querySelectorAll('.key[data-value], .key[data-action]');
+    const deleteKey = document.getElementById('deleteKey');
+    const themeToggle = document.querySelector('[data-theme-toggle]');
+    const root = document.documentElement;
+    const emptyHint = document.getElementById('emptyHint');
+
+    const historyStorageKey = 'calculator3000-history';
+    const draftStorageKey = 'calculator3000-draft';
+    let history = [];
+    const visibleCount = 6;
+    const maxHistory = 50;
+    const deleteHoldDelay = 550;
+
+    const historyToggle = document.getElementById('historyToggle');
+    const historyModal = document.getElementById('historyModal');
+    const historyModalClose = document.getElementById('historyModalClose');
+    const historyModalList = document.getElementById('historyModalList');
+    const historyModalCount = document.getElementById('historyModalCount');
+    const historyClear = document.getElementById('historyClear');
+    const historyEditToggle = document.getElementById('historyEditToggle');
+
+    let editMode = false;
+    let selectedIds = new Set();
+
+    const settingsToggle = document.getElementById('settingsToggle');
+    const settingsModal = document.getElementById('settingsModal');
+    const settingsModalClose = document.getElementById('settingsModalClose');
+    const helpToggle = document.getElementById('helpToggle');
+    const helpModal = document.getElementById('helpModal');
+    const helpModalClose = document.getElementById('helpModalClose');
+    const fontSizeRange = document.getElementById('fontSizeRange');
+    const fontSizeValue = document.getElementById('fontSizeValue');
+    const decimalsOptions = document.getElementById('decimalsOptions');
+
+    const defaultSettings = { fontScale: 100, decimals: 2 };
+    const settings = { ...defaultSettings };
+    const settingsStorageKey = 'calculator3000-settings';
+
+    let holdTimer = null;
+    let holdTriggered = false;
+    let rawExpression = '';
+    let lastEvaluated = false;
+    let idCounter = 0;
+
+    function updateEmptyHint() {
+      emptyHint.classList.toggle('visible', rawExpression.length === 0);
+    }
+
+    function setTheme(theme) {
+      root.setAttribute('data-theme', theme);
+      themeToggle.innerHTML = theme === 'dark'
+        ? '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>'
+        : '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"></circle><path d="M12 1v2"></path><path d="M12 21v2"></path><path d="M4.22 4.22l1.42 1.42"></path><path d="M18.36 18.36l1.42 1.42"></path><path d="M1 12h2"></path><path d="M21 12h2"></path><path d="M4.22 19.78l1.42-1.42"></path><path d="M18.36 5.64l1.42-1.42"></path></svg>';
+    }
+
+    function loadTheme() {
+      try {
+        const saved = localStorage.getItem('calculator3000-theme');
+        if (saved === 'dark' || saved === 'light') return saved;
+      } catch (err) { /* ignore */ }
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    setTheme(loadTheme());
+    themeToggle.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      setTheme(next);
+      try { localStorage.setItem('calculator3000-theme', next); } catch (err) { /* ignore */ }
+    });
+
+    function unformatDisplayValue(value) {
+      return value.replace(/\./g, '').replace(/,/g, '.');
+    }
+
+    function formatNumber(value) {
+      if (!Number.isFinite(value)) throw new Error('Non valida');
+      const factor = Math.pow(10, settings.decimals);
+      const rounded = Math.round((value + Number.EPSILON) * factor) / factor;
+      return new Intl.NumberFormat('it-IT', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: settings.decimals
+      }).format(rounded);
+    }
+
+    function formatEditable(raw) {
+      if (!raw) return '';
+      let out = '';
+      let numberBuffer = '';
+
+      function flush() {
+        if (!numberBuffer) return;
+        out += formatNumberForInput(numberBuffer);
+        numberBuffer = '';
+      }
+
+      for (const char of raw) {
+        if (/\d|\./.test(char)) {
+          numberBuffer += char;
+        } else {
+          flush();
+          out += char === '.' ? ',' : char;
+        }
+      }
+      flush();
+      return out;
+    }
+
+    function formatNumberForInput(rawNumber) {
+      if (!rawNumber) return '';
+      const trailingDot = rawNumber.endsWith('.');
+      const [intPartRaw, decPartRaw = ''] = rawNumber.split('.');
+      const intDigits = (intPartRaw || '0').replace(/^0+(?=\d)/, '') || '0';
+      const intFormatted = intDigits.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      if (trailingDot) return intFormatted + ',';
+      if (rawNumber.includes('.')) return intFormatted + ',' + decPartRaw;
+      return intFormatted;
+    }
+
+    function persistHistory() {
+      try {
+        localStorage.setItem(historyStorageKey, JSON.stringify(history));
+      } catch (err) { /* ignore */ }
+    }
+
+    function loadHistory() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(historyStorageKey));
+        if (Array.isArray(saved)) {
+          history = saved.slice(-maxHistory).map((item) => ({
+            id: item.id ?? (idCounter++),
+            formula: item.formula,
+            result: item.result,
+            isError: Boolean(item.isError)
+          }));
+          idCounter = history.reduce((max, item) => Math.max(max, item.id + 1), 0);
+        }
+      } catch (err) {
+        history = [];
+      }
+    }
+
+    function persistDraft() {
+      try {
+        localStorage.setItem(draftStorageKey, JSON.stringify({ rawExpression, lastEvaluated }));
+      } catch (err) { /* ignore */ }
+    }
+
+    function loadDraft() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(draftStorageKey));
+        if (saved && typeof saved === 'object') {
+          rawExpression = typeof saved.rawExpression === 'string' ? saved.rawExpression : '';
+          lastEvaluated = Boolean(saved.lastEvaluated);
+        }
+      } catch (err) {
+        rawExpression = '';
+        lastEvaluated = false;
+      }
+    }
+
+    function syncDisplayFromRaw() {
+      expressionInput.value = formatEditable(rawExpression);
+      updateEmptyHint();
+      persistDraft();
+    }
+
+    const basicOperators = ['+', '-', '*', '/'];
+
+    function insertValue(value) {
+      if (lastEvaluated && /[0-9,.]/.test(value)) {
+        rawExpression = '';
+      }
+      lastEvaluated = false;
+      const normalized = value === ',' ? '.' : value;
+
+      if (basicOperators.includes(normalized) && rawExpression.length) {
+        const lastChar = rawExpression[rawExpression.length - 1];
+        if (basicOperators.includes(lastChar)) {
+          rawExpression = rawExpression.slice(0, -1) + normalized;
+          syncDisplayFromRaw();
+          return;
+        }
+      }
+
+      rawExpression += normalized;
+      syncDisplayFromRaw();
+    }
+
+    function clearCurrentExpression() {
+      rawExpression = '';
+      lastEvaluated = false;
+      syncDisplayFromRaw();
+    }
+
+    function backspaceExpression() {
+      rawExpression = rawExpression.slice(0, -1);
+      lastEvaluated = false;
+      syncDisplayFromRaw();
+    }
+
+    function normalizeOperators(text) {
+      return text
+        .replace(/\s+/g, '')
+        .replace(/\./g, '')
+        .replace(/,/g, '.')
+        .replace(/×/g, '*')
+        .replace(/÷/g, '/')
+        .replace(/−/g, '-');
+    }
+
+    function tokenize(expression) {
+      const tokens = [];
+      let i = 0;
+      while (i < expression.length) {
+        const char = expression[i];
+        if (/\d|\./.test(char)) {
+          let number = char;
+          i++;
+          while (i < expression.length && /[\d.]/.test(expression[i])) number += expression[i++];
+          if ((number.match(/\./g) || []).length > 1) throw new Error('Non valida');
+          tokens.push({ type: 'number', value: Number(number) });
+          continue;
+        }
+        if ('+-*/()%'.includes(char)) {
+          tokens.push({ type: 'operator', value: char });
+          i++;
+          continue;
+        }
+        throw new Error('Non valida');
+      }
+      return tokens;
+    }
+
+    function preprocessTokens(tokens) {
+      const processed = [];
+      for (let i = 0; i < tokens.length; i++) {
+        const token = tokens[i];
+        const prev = processed[processed.length - 1];
+        if (token.type === 'operator' && token.value === '%') {
+          const base = findPercentBase(processed);
+          if (base === null || !prev || prev.type !== 'number') {
+            processed.push({ type: 'operator', value: '%' });
+            continue;
+          }
+          processed.pop();
+          processed.push({ type: 'number', value: (base * prev.value) / 100 });
+          continue;
+        }
+        if (token.type === 'operator' && token.value === '-' && (!prev || (prev.type === 'operator' && prev.value !== ')'))) {
+          processed.push({ type: 'number', value: 0 });
+          processed.push(token);
+          continue;
+        }
+        processed.push(token);
+      }
+      return processed;
+    }
+
+    function findPercentBase(processed) {
+      let depth = 0;
+      for (let i = processed.length - 2; i >= 0; i--) {
+        const token = processed[i];
+        if (token.type === 'operator' && token.value === ')') { depth++; continue; }
+        if (token.type === 'operator' && token.value === '(') { if (depth > 0) depth--; continue; }
+        if (depth > 0) continue;
+        if (token.type === 'operator' && (token.value === '+' || token.value === '-')) {
+          return evaluateProcessedTokens(processed.slice(0, i));
+        }
+        if (token.type === 'operator' && (token.value === '*' || token.value === '/')) {
+          return 1;
+        }
+      }
+      return 1;
+    }
+
+    function toRpn(tokens) {
+      const output = [];
+      const operators = [];
+      const precedence = { '+': 1, '-': 1, '*': 2, '/': 2 };
+      tokens.forEach((token) => {
+        if (token.type === 'number') {
+          output.push(token);
+          return;
+        }
+        if (token.value === '(') {
+          operators.push(token);
+          return;
+        }
+        if (token.value === ')') {
+          while (operators.length && operators[operators.length - 1].value !== '(') output.push(operators.pop());
+          if (!operators.length) throw new Error('Non valida');
+          operators.pop();
+          return;
+        }
+        while (operators.length && operators[operators.length - 1].value !== '(' && precedence[operators[operators.length - 1].value] >= precedence[token.value]) {
+          output.push(operators.pop());
+        }
+        operators.push(token);
+      });
+      while (operators.length) {
+        const op = operators.pop();
+        if (op.value === '(') throw new Error('Non valida');
+        output.push(op);
+      }
+      return output;
+    }
+
+    function evaluateRpn(rpn) {
+      const stack = [];
+      rpn.forEach((token) => {
+        if (token.type === 'number') {
+          stack.push(token.value);
+          return;
+        }
+        const b = stack.pop();
+        const a = stack.pop();
+        if (a === undefined || b === undefined) throw new Error('Non valida');
+        if (token.value === '+') stack.push(a + b);
+        if (token.value === '-') stack.push(a - b);
+        if (token.value === '*') stack.push(a * b);
+        if (token.value === '/') {
+          if (b === 0) throw new Error('Non valida');
+          stack.push(a / b);
+        }
+      });
+      if (stack.length !== 1 || Number.isNaN(stack[0])) throw new Error('Non valida');
+      return stack[0];
+    }
+
+    function evaluateProcessedTokens(tokens) {
+      return evaluateRpn(toRpn(tokens));
+    }
+
+    function evaluateExpression(raw) {
+      const normalized = normalizeOperators(raw);
+      if (!normalized) throw new Error('Vuota');
+      const tokens = tokenize(normalized);
+      const processed = preprocessTokens(tokens);
+      return evaluateProcessedTokens(processed);
+    }
+
+    function createEntryButton(item, isLatest) {
+      const entry = document.createElement('button');
+      entry.type = 'button';
+      entry.className = 'entry' + (isLatest ? ' latest' : '') + (item.isError ? ' error' : '');
+      const resultLabel = item.isError ? 'Errore' : ('= ' + item.result);
+      entry.innerHTML = `<span class="formula">${item.formula}</span><span class="result">${resultLabel}</span>`;
+      entry.addEventListener('click', () => {
+        if (item.isError) return;
+        rawExpression = unformatDisplayValue(item.result);
+        lastEvaluated = false;
+        syncDisplayFromRaw();
+        closeHistoryModal();
+        const len = expressionInput.value.length;
+        expressionInput.focus({ preventScroll: true });
+        expressionInput.setSelectionRange(len, len);
+      });
+      return entry;
+    }
+
+    function renderHistory() {
+      historyEl.innerHTML = '';
+      if (!history.length) return;
+      const visible = history.slice(-visibleCount);
+      visible.forEach((item, index) => {
+        const isLatest = index === visible.length - 1;
+        historyEl.appendChild(createEntryButton(item, isLatest));
+      });
+    }
+
+    function createHistoryModalRow(item) {
+      const row = document.createElement('div');
+      row.className = 'history-modal-row';
+
+      const circle = document.createElement('button');
+      circle.type = 'button';
+      circle.className = 'select-circle' + (selectedIds.has(item.id) ? ' checked' : '');
+      circle.setAttribute('aria-label', 'Seleziona questo calcolo');
+      circle.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>';
+      circle.addEventListener('click', (event) => {
+        event.stopPropagation();
+        if (selectedIds.has(item.id)) {
+          selectedIds.delete(item.id);
+        } else {
+          selectedIds.add(item.id);
+        }
+        circle.classList.toggle('checked');
+      });
+
+      const entryBtn = createEntryButton(item, false);
+      if (editMode) {
+        entryBtn.addEventListener('click', (event) => {
+          event.stopPropagation();
+        }, true);
+      }
+
+      row.appendChild(circle);
+      row.appendChild(entryBtn);
+      return row;
+    }
+
+    function renderHistoryModal() {
+      historyModalList.innerHTML = '';
+      if (!history.length) {
+        historyModalCount.textContent = '';
+        historyModalList.innerHTML = '<div class="history-modal-empty">Nessun calcolo salvato.</div>';
+        return;
+      }
+      historyModalCount.textContent = history.length + (history.length === 1 ? ' calcolo salvato' : ' calcoli salvati');
+      history.slice().reverse().forEach((item) => {
+        historyModalList.appendChild(createHistoryModalRow(item));
+      });
+    }
+
+    function openHistoryModal() {
+      editMode = false;
+      selectedIds.clear();
+      historyModal.classList.remove('editing');
+      historyEditToggle.classList.remove('edit-active');
+      renderHistoryModal();
+      historyModal.classList.add('open');
+      historyModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeHistoryModal() {
+      editMode = false;
+      selectedIds.clear();
+      historyModal.classList.remove('editing');
+      historyEditToggle.classList.remove('edit-active');
+      historyModal.classList.remove('open');
+      historyModal.setAttribute('aria-hidden', 'true');
+    }
+
+    historyToggle.addEventListener('click', openHistoryModal);
+
+    historyEditToggle.addEventListener('click', () => {
+      editMode = !editMode;
+      selectedIds.clear();
+      historyModal.classList.toggle('editing', editMode);
+      historyEditToggle.classList.toggle('edit-active', editMode);
+      renderHistoryModal();
+    });
+
+    historyClear.addEventListener('click', () => {
+      if (!history.length) return;
+      if (editMode && selectedIds.size > 0) {
+        history = history.filter((item) => !selectedIds.has(item.id));
+        selectedIds.clear();
+        persistHistory();
+        renderHistory();
+        renderHistoryModal();
+        return;
+      }
+      history = [];
+      selectedIds.clear();
+      persistHistory();
+      renderHistory();
+      closeHistoryModal();
+    });
+
+    historyModalClose.addEventListener('click', closeHistoryModal);
+    historyModal.addEventListener('click', (event) => {
+      if (event.target === historyModal) closeHistoryModal();
+    });
+
+    function pushHistory(formula, result, isError = false) {
+      history.push({ id: idCounter++, formula, result, isError });
+      if (history.length > maxHistory) history.shift();
+      persistHistory();
+      renderHistory();
+    }
+
+    function calculate() {
+      const displayRaw = expressionInput.value.trim();
+      try {
+        const result = evaluateExpression(displayRaw);
+        const formatted = formatNumber(result);
+        pushHistory(displayRaw, formatted, false);
+        rawExpression = unformatDisplayValue(formatted);
+        lastEvaluated = true;
+        syncDisplayFromRaw();
+        const len = expressionInput.value.length;
+        expressionInput.focus({ preventScroll: true });
+        expressionInput.setSelectionRange(len, len);
+      } catch (error) {
+        pushHistory(displayRaw || '—', error.message, true);
+      }
+    }
+
+    keys.forEach((key) => {
+      key.addEventListener('pointerdown', (event) => {
+        event.preventDefault();
+        const { value, action } = key.dataset;
+        if (value) insertValue(value);
+        if (action === 'calculate') calculate();
+      });
+    });
+
+    function startDeleteHold() {
+      holdTriggered = false;
+      deleteKey.classList.add('holding');
+      holdTimer = window.setTimeout(() => {
+        holdTriggered = true;
+        clearCurrentExpression();
+      }, deleteHoldDelay);
+    }
+
+    function stopDeleteHold() {
+      deleteKey.classList.remove('holding');
+      if (holdTimer) {
+        clearTimeout(holdTimer);
+        holdTimer = null;
+      }
+    }
+
+    deleteKey.addEventListener('pointerdown', (event) => {
+      event.preventDefault();
+      startDeleteHold();
+    });
+
+    deleteKey.addEventListener('pointerup', () => {
+      stopDeleteHold();
+      if (!holdTriggered) backspaceExpression();
+    });
+
+    deleteKey.addEventListener('pointerleave', stopDeleteHold);
+    deleteKey.addEventListener('pointercancel', stopDeleteHold);
+
+    expressionInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        calculate();
+        return;
+      }
+      if (event.key === 'Backspace') {
+        event.preventDefault();
+        backspaceExpression();
+        return;
+      }
+      if (event.key === 'Delete') {
+        event.preventDefault();
+        clearCurrentExpression();
+        return;
+      }
+      if (event.key.length === 1 && /[0-9()+\-*/%,.]/.test(event.key)) {
+        event.preventDefault();
+        insertValue(event.key);
+      }
+    });
+
+    expressionInput.addEventListener('paste', (event) => {
+      event.preventDefault();
+      const pasted = (event.clipboardData || window.clipboardData).getData('text');
+      rawExpression = normalizeOperators(pasted);
+      lastEvaluated = false;
+      syncDisplayFromRaw();
+    });
+
+    function applySettings() {
+      root.style.setProperty('--user-font-scale', settings.fontScale / 100);
+      fontSizeValue.textContent = settings.fontScale + '%';
+      fontSizeRange.value = settings.fontScale;
+      decimalsOptions.querySelectorAll('.decimals-option').forEach((b) => {
+        b.classList.toggle('active', Number(b.dataset.decimals) === settings.decimals);
+      });
+    }
+
+    function persistSettings() {
+      try { localStorage.setItem(settingsStorageKey, JSON.stringify(settings)); } catch (err) { /* ignore */ }
+      renderHistory();
+    }
+
+    function openSettingsModal() {
+      settingsModal.classList.add('open');
+      settingsModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeSettingsModal() {
+      settingsModal.classList.remove('open');
+      settingsModal.setAttribute('aria-hidden', 'true');
+    }
+
+    settingsToggle.addEventListener('click', openSettingsModal);
+    settingsModalClose.addEventListener('click', closeSettingsModal);
+    settingsModal.addEventListener('click', (event) => {
+      if (event.target === settingsModal) closeSettingsModal();
+    });
+
+    function openHelpModal() {
+      helpModal.classList.add('open');
+      helpModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeHelpModal() {
+      helpModal.classList.remove('open');
+      helpModal.setAttribute('aria-hidden', 'true');
+    }
+
+    helpToggle.addEventListener('click', openHelpModal);
+    helpModalClose.addEventListener('click', closeHelpModal);
+    helpModal.addEventListener('click', (event) => {
+      if (event.target === helpModal) closeHelpModal();
+    });
+
+    fontSizeRange.addEventListener('input', () => {
+      settings.fontScale = Number(fontSizeRange.value);
+      applySettings();
+      persistSettings();
+    });
+
+    decimalsOptions.querySelectorAll('.decimals-option').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        settings.decimals = Number(btn.dataset.decimals);
+        decimalsOptions.querySelectorAll('.decimals-option').forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderHistory();
+        persistSettings();
+      });
+    });
+
+    function loadSettings() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(settingsStorageKey));
+        if (saved && typeof saved === 'object') {
+          settings.fontScale = saved.fontScale ?? defaultSettings.fontScale;
+          settings.decimals = saved.decimals ?? defaultSettings.decimals;
+        }
+      } catch (err) {
+        Object.assign(settings, defaultSettings);
+      }
+    }
+
+    loadSettings();
+    loadHistory();
+    loadDraft();
+    applySettings();
+    syncDisplayFromRaw();
+    updateEmptyHint();
+    renderHistory();
+
+    window.addEventListener('pagehide', () => {
+      persistHistory();
+      persistDraft();
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') {
+        persistHistory();
+        persistDraft();
+      }
+    });
+
+    window.addEventListener('beforeunload', () => {
+      persistHistory();
+      persistDraft();
+    });
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js').catch(() => { /* ignore */ });
+      });
+    }
+  </script>
+</body>
+</html>
